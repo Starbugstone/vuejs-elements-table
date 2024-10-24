@@ -12,8 +12,8 @@ const loading = ref(true)
 const searchQuery = ref('')
 const currentPage = ref(1)
 const pageSize = ref(10)
-const sortBy = ref('')
-const sortOrder = ref('ascending')
+const sortBy = ref<string | null>(null)
+const sortOrder = ref<'ascending' | 'descending' | null>(null)
 const filters = ref<Record<string, string>>({})
 
 const API_URL = 'https://jsonplaceholder.typicode.com/posts'
@@ -49,6 +49,16 @@ const filteredData = computed(() => {
     }
   })
 
+  if (sortBy.value && sortOrder.value) {
+    result.sort((a, b) => {
+      const valA = a[sortBy.value!]
+      const valB = b[sortBy.value!]
+      if (valA < valB) return sortOrder.value === 'ascending' ? -1 : 1
+      if (valA > valB) return sortOrder.value === 'ascending' ? 1 : -1
+      return 0
+    })
+  }
+
   return result
 })
 
@@ -59,7 +69,6 @@ const paginatedData = computed(() => {
 })
 
 const totalItems = computed(() => filteredData.value.length)
-// const totalPages = computed(() => Math.ceil(totalItems.value / pageSize.value))
 
 const handleSort = ({ prop, order }: { prop: string, order: string }) => {
   sortBy.value = prop
@@ -69,18 +78,6 @@ const handleSort = ({ prop, order }: { prop: string, order: string }) => {
 const handleFilter = (value: string, column: string) => {
   filters.value = { ...filters.value, [column]: value }
 }
-
-// const handlePageNumberInput = (event: Event) => {
-//   const input = event.target as HTMLInputElement
-//   let page = parseInt(input.value)
-  
-//   if (isNaN(page)) {
-//     page = 1
-//   }
-  
-//   page = Math.max(1, Math.min(page, totalPages.value))
-//   currentPage.value = page
-// }
 
 onMounted(() => {
   fetchData()
@@ -218,8 +215,7 @@ onMounted(() => {
 :deep(.caret-wrapper) {
   position: absolute !important;
   right: 0;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
+  top: 50%;
 }
 
 .pagination {
@@ -228,25 +224,18 @@ onMounted(() => {
   margin-top: 16px;
 }
 
-:deep(.el-table__header-wrapper) {
+.el-table__header-wrapper {
   background-color: #f5f7fa;
 }
 
-:deep(.el-table th) {
+.el-table th {
   background-color: #f5f7fa;
 }
 
 /* Ensure sort icons stay on the right */
-:deep(.el-table .sort-caret) {
+.el-table .sort-caret {
   position: absolute;
   right: 4px;
 }
 
-:deep(.ascending .sort-caret.ascending) {
-  top: 5px;
-}
-
-:deep(.descending .sort-caret.descending) {
-  bottom: 7px;
-}
 </style>
