@@ -131,7 +131,7 @@ onMounted(() => {
                 placeholder="Filter title"
                 size="small"
                 clearable
-                @input="value => handleFilter(value, 'title')"
+                @input="handleFilter($event, 'title')"
               />
             </div>
           </div>
@@ -152,7 +152,7 @@ onMounted(() => {
                 placeholder="Filter body"
                 size="small"
                 clearable
-                @input="value => handleFilter(value, 'body')"
+                @input="handleFilter($event, 'body')"
               />
             </div>
           </div>
