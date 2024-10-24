@@ -59,7 +59,7 @@ const paginatedData = computed(() => {
 })
 
 const totalItems = computed(() => filteredData.value.length)
-const totalPages = computed(() => Math.ceil(totalItems.value / pageSize.value))
+// const totalPages = computed(() => Math.ceil(totalItems.value / pageSize.value))
 
 const handleSort = ({ prop, order }: { prop: string, order: string }) => {
   sortBy.value = prop
@@ -70,17 +70,17 @@ const handleFilter = (value: string, column: string) => {
   filters.value = { ...filters.value, [column]: value }
 }
 
-const handlePageNumberInput = (event: Event) => {
-  const input = event.target as HTMLInputElement
-  let page = parseInt(input.value)
+// const handlePageNumberInput = (event: Event) => {
+//   const input = event.target as HTMLInputElement
+//   let page = parseInt(input.value)
   
-  if (isNaN(page)) {
-    page = 1
-  }
+//   if (isNaN(page)) {
+//     page = 1
+//   }
   
-  page = Math.max(1, Math.min(page, totalPages.value))
-  currentPage.value = page
-}
+//   page = Math.max(1, Math.min(page, totalPages.value))
+//   currentPage.value = page
+// }
 
 onMounted(() => {
   fetchData()
