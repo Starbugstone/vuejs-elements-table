@@ -70,7 +70,7 @@ const paginatedData = computed(() => {
 
 const totalItems = computed(() => filteredData.value.length)
 
-const handleSort = ({ prop, order }: { prop: string, order: string }) => {
+const handleSort = ({ prop, order }: { prop: string, order: 'ascending' | 'descending' | null }) => {
   sortBy.value = prop
   sortOrder.value = order
 }
